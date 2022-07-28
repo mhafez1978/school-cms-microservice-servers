@@ -108,7 +108,7 @@ const modifyUserRoleController = async (req, res) => {
       }
     })
     .then((data) => {
-		console.log(data.dataValues)
+      console.log(data.dataValues);
       return res.send(data[0]);
     })
     .catch((err) => {
