@@ -9,8 +9,9 @@ const home = (req, res) => {
 
 // for global admin only to drop & re-sync userdb
 const createUserDbController = async (req, res) => {
-  User.belongsTo(Role);
   Role.hasMany(User);
+  User.hasOne(Role);
+  User.belongsTo(Role);
 
   const results = await db
     .sync({ force: true })
@@ -20,6 +21,75 @@ const createUserDbController = async (req, res) => {
     .catch((err) => {
       res.send(err);
     });
+};
+
+// user controller
+const getAllUsersController = async (req, res) => {
+  const data = await User.findAll();
+  if (data === null || data.length === 0) {
+    res.send('No users found in db ...');
+  } else {
+    return res.send(data);
+  }
+};
+
+const createNewAdminUserController = async (req, res) => {
+  const {
+    fname,
+    lname,
+    pnumber,
+    email,
+    username,
+    pass,
+    dob,
+    al1,
+    al2,
+    city,
+    state,
+    zcode,
+  } = req.body;
+  if (!fname || !lname || fname === undefined || lname === undefined) {
+    res.send(
+      'first name , last name and role id are required to create a user ...'
+    );
+  } else {
+    const adminRole = await Role.create({
+      roleTitle: 'admin',
+      roleDescription: 'School Admin',
+    })
+      .then((adminRole) => {
+        let roleId = adminRole.dataValues.roleId;
+        roleId = Number(roleId);
+        return roleId;
+      })
+      .then(async (roleId) => {
+        return (admin = await User.create({
+          firstName: fname,
+          lastName: lname,
+          phoneNumber: pnumber,
+          email: email,
+          username: username,
+          password: pass,
+          dateOfBirth: dob,
+          addressLine1: al1,
+          addressLine2: al2,
+          city: city,
+          state: state,
+          zipCode: zcode,
+          roleRoleId: roleId,
+        }).then(async (admin) => {
+          await admin.save();
+          res.send(admin);
+        }));
+      });
+  }
+};
+
+const getAllAdminUsersConroller = async (req, res) => {
+  const data = await Role.findAll({
+    include: User,
+  });
+  res.send(data);
 };
 
 // for global admin only to create roles to assign to each registered user to manage access and authorization
@@ -119,6 +189,9 @@ const modifyUserRoleController = async (req, res) => {
 module.exports = {
   home,
   createUserDbController,
+  getAllUsersController,
+  createNewAdminUserController,
+  getAllAdminUsersConroller,
   createUserRoleController,
   getUserRolesController,
   deleteUserRoleController,
