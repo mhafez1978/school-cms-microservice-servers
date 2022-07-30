@@ -1,5 +1,3 @@
-// require('dotenv').config();
-// const { config } = require('./config');
 const Sequelize = require('sequelize');
 
 const db = new Sequelize('userdb', 'dbadmin', '123456789!!!', {
@@ -11,6 +9,7 @@ const db = new Sequelize('userdb', 'dbadmin', '123456789!!!', {
     acquire: 3000,
     idle: 1000,
   },
+  logging: (...msg) => console.log(msg),
 });
 
 module.exports = db;

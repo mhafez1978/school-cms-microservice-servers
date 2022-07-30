@@ -1,32 +1,44 @@
 const db = require('../database/db');
 const { DataTypes } = require('sequelize');
 
-const User = db.define(
-  'User',
+const ContactInfo = db.define(
+  'ContactInfo',
   {
-    userId: {
+    contactInfoId: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    firstName: {
+    phoneNumber1: {
+      type: DataTypes.STRING,
+    },
+    phoneNumber1: {
+      type: DataTypes.STRING,
+    },
+    emailAddress: {
+      type: DataTypes.STRING,
+    },
+    alternativeEmail: {
+      type: DataTypes.STRING,
+    },
+    addressLine1: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    username: {
+    addressLine2: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    password: {
+    city: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    dateOfBirth: {
-      type: DataTypes.DATEONLY,
+    state: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    zipCode: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },
@@ -35,4 +47,4 @@ const User = db.define(
   }
 );
 
-module.exports = User;
+module.exports = ContactInfo;
