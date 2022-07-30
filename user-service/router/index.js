@@ -9,13 +9,16 @@ const createModelsInDb = (req, res) => {
 };
 
 const creatUser = (req, res) => {
-  return controllers.createUserInDbController(req,res);
-}
+  return controllers.createUserInDbController(req, res);
+};
 
+const createAdminUser = (req, res) => {
+  return controllers.createAdminUserController(req, res);
+};
 
 module.exports = {
   home,
   createModelsInDb,
-  creatUser,
-  
+  createAdminUser,
+  createAdminUser,
 };

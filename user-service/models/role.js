@@ -17,6 +17,12 @@ const Role = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    UserUserUUId: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      forignKey: true,
+      allowNull: false,
+    },
   },
   {
     onDelete: 'cascade',

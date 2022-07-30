@@ -99,10 +99,85 @@ const createUserInDbController = async (req, res) => {
   }));
 };
 
+const createAdminUserController = async (req, res) => {
+  let = { fname, lname, uname, password, dob } = req.body;
 
+  if (!fname || fname === null || fname === '') {
+    return res.send('Need first name ...');
+  } else {
+    fname = fname.charAt(0).toUpperCase() + fname.slice(1);
+  }
+
+  if (!lname || lname === null || lname === '') {
+    // no lastname let's set to empty string
+    lname = '';
+  } else {
+    lname = lname.charAt(0).toUpperCase() + lname.slice(1);
+  }
+
+  if ((!uname || uname === null || uname === '') && lname.length === 0) {
+    uname = fname[0].toUpperCase() + '.Doe';
+  }
+
+  if ((!uname || uname === null || uname === '') && lname.length > 0) {
+    uname = fname[0] + lname;
+  }
+
+  if (uname.length > 0) {
+    uname = uname;
+  }
+
+  if (!password || password === null || password === '') {
+    password = '';
+  } else {
+    password = password;
+  }
+
+  if (!dob || dob === null || dob === '') {
+    console.log('no date given at all ...');
+  } else {
+    if (typeof dob === Date()) {
+      console.log('date given is vallid');
+      dob = dob;
+    } else {
+      console.log('date given is invalid date resetting to blank');
+      date = '';
+    }
+  }
+
+  if (typeof dob === DataTypes.DATEONLY) {
+    const user = await User.create({
+      firstName: fname,
+      lastName: lname,
+      username: uname,
+      password: password,
+      dateOfBirth: dob,
+    });
+    const role = await Role.create({
+      RoleTitle: 'admin',
+      RoleDescription: 'admin role',
+      UserUserUUId: user.userUUId,
+    });
+    res.send({ user, role });
+  } else {
+    const user = await User.create({
+      firstName: fname,
+      lastName: lname,
+      username: uname,
+      password: password,
+    });
+    const role = await Role.create({
+      RoleTitle: 'admin',
+      RoleDescription: 'admin role',
+      UserUserUUId: user.userUUId,
+    });
+    res.send({ user, role });
+  }
+};
 
 module.exports = {
   home,
   createModelsInDbController,
   createUserInDbController,
+  createAdminUserController,
 };

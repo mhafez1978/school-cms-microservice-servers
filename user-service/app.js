@@ -13,7 +13,8 @@ myRouter.get('/', router.home);
 //creates All Models in db in form of tables for each model, also will link up associations.
 myRouter.put('/reset/all/models', router.createModelsInDb);
 // create a user only without a role or contactinfo
-myRouter.post('/create/user', router.creatUser);
+
+myRouter.post('/create/admin/user', router.createAdminUser);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
